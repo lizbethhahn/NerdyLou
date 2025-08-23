@@ -1,5 +1,6 @@
 ﻿@page "/weather"
 @using System.Diagnostics.Metrics
+@rendermode InteractiveServer
 @attribute [StreamRendering]
 
 <PageTitle>Weather</PageTitle>
@@ -8,7 +9,7 @@
     <MudText Typo="Typo.h5" Class="mb-2">Weather</MudText>
     <MudText Class="mb-4">Converted to MudTable...Ta da!</MudText>
 
-    @if (forecasts is null)
+    @if (_forecasts == null)
     {
         <MudStack Row align-center Spacing="2">
             <MudProgressCircular Indeterminate="true" />
@@ -17,7 +18,14 @@
     }
     else
     {
-        <MudTable Items="@forecasts" Dense="true" Hover="true" Striped="true" Bordered="true">
+        <MudTable Items="@_forecasts" Dense="true" Hover="true" Striped="true" Bordered="true" 
+            Filter="new Func<WeatherForecast, bool>(FilterFunction1)" Breakpoint="Breakpoint.Sm">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6" Class="ml-2">Weather Forecast</MudText>
+                <MudSpacer />
+	            <MudTextField @bind-Value="_searchString" Placeholder="Search..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
+                </MudTextField>
+            </ToolBarContent>
             <HeaderContent>
                 <MudTh>Date</MudTh>
                 <MudTh>Temp. (C)</MudTh>
@@ -31,16 +39,13 @@
                 <MudTd DataLabel="Temp. (F)">@context.TemperatureF</MudTd>
                 <MudTd DataLabel="Summary">@context.Summary</MudTd>
             </RowTemplate>
-
-            <NoRecordsContent>
-                <MudText Class="p-4">No data.</MudText>
-            </NoRecordsContent>
         </MudTable>
     }
 </MudPaper>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private WeatherForecast[]? _forecasts;
+    private string _searchString = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,7 +53,7 @@
 
         var startDate = DateOnly.FromDateTime(DateTime.Now);
         var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        _forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = startDate.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
@@ -57,10 +62,27 @@
     }
 
     private class WeatherForecast
-    {
+    {        
         public DateOnly Date { get; set; }
         public int TemperatureC { get; set; }
         public string? Summary { get; set; }
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
+
+    private bool FilterFunction1(WeatherForecast forecast) => FilterFunction2(forecast, _searchString);
+
+    private bool FilterFunction2(WeatherForecast forecast, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (forecast.Date.ToString().Contains(searchString))
+            return true;
+        if (forecast.TemperatureC.ToString().Contains(searchString))
+            return true;
+        if (forecast.TemperatureF.ToString().Contains(searchString))
+            return true;
+        if (forecast.Summary!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+	}
 }
