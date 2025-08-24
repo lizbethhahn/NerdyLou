@@ -18,19 +18,35 @@
     }
     else
     {
-        <MudTable Items="@_forecasts" Dense="true" Hover="true" Striped="true" Bordered="true" 
-            Filter="new Func<WeatherForecast, bool>(FilterFunction1)" Breakpoint="Breakpoint.Sm">
+        <MudTable T="WeatherForecast" 
+            Items="@_forecasts" 
+            Dense="true" Hover="true" 
+            Striped="true" Bordered="true" 
+            Filter="new Func<WeatherForecast, bool>(FilterFunction1)" 
+            Breakpoint="Breakpoint.Sm" 
+            SortLabel="Sort By">
+
             <ToolBarContent>
                 <MudText Typo="Typo.h6" Class="ml-2">Weather Forecast</MudText>
                 <MudSpacer />
-	            <MudTextField @bind-Value="_searchString" Placeholder="Search..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
+                <MudTextField @bind-Value="_searchString" 
+                    Placeholder="Search..." 
+                    Adornment="Adornment.Start" 
+                    AdornmentIcon="@Icons.Material.Filled.Search"
+                    Immediate="true"
+                    DebounceInterval="150" 
+                    IconSize="Size.Medium" 
+                    Class="mt-0">
                 </MudTextField>
             </ToolBarContent>
+
             <HeaderContent>
-                <MudTh>Date</MudTh>
-                <MudTh>Temp. (C)</MudTh>
-                <MudTh>Temp. (F)</MudTh>
-                <MudTh>Summary</MudTh>
+                @* <MudTh>Date</MudTh> *@
+                <MudTh><MudTableSortLabel T="WeatherForecast" SortBy="@((WeatherForecast x) => x.Date.DayNumber)" InitialDirection="SortDirection.Ascending">Date</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel T="WeatherForecast" SortBy="@((WeatherForecast x) => x.TemperatureC)">Temp. (C)</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel T="WeatherForecast" SortBy="@((WeatherForecast x) => x.TemperatureF)">Temp. (F)</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel T="WeatherForecast" SortBy="@((WeatherForecast x) => x.Summary)">Summary </MudTableSortLabel></MudTh>
+                @* <MudTh>Summary</MudTh>  *@
             </HeaderContent>
 
             <RowTemplate>
