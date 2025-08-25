@@ -1,4 +1,4 @@
-using NerdyLou.Components;
+using NerdyLou.UI.Components;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
