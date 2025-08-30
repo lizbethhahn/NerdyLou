@@ -1,0 +1,22 @@
+﻿@@page "/"
+@inject NavigationManager Nav
+
+@* 
+  Why this file exists (MAUI only):
+  - Shared Nav uses "/" for the Home link so both hosts (Web + MAUI) can share the same markup.
+  - The MAUI app’s real home is at "/maui-home", so this page catches "/" and redirects there.
+  - This does NOT affect the web host; UI has its own "/" in a separate process.
+
+  When it's safe to delete:
+  - If you change MAUI’s Home to live at "/" directly, or
+  - If you introduce a single Shared Home page at "/".
+*@
+@code {
+    protected override void OnInitialized()
+    {
+        // Redirect immediately to MAUI’s home. Using forceLoad=true is fine in WebView.
+        Nav.NavigateTo("/maui-home", true);
+        // If you prefer to keep it purely client-side and preserve SPA history, you can use:
+        // Nav.NavigateTo("/maui-home");
+    }
+}

@@ -1,0 +1,9 @@
+﻿<Router AppAssembly="@typeof(MinimalRouter).Assembly"
+        AdditionalAssemblies="@(new[] { typeof(NerdyLou.Shared.AssemblyMarker).Assembly })">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" />
+    </Found>
+    <NotFound>
+        <p>Not found.</p>
+    </NotFound>
+</Router>
