@@ -1,8 +1,8 @@
 @using Microsoft.AspNetCore.Components.Routing
+@using MudBlazor
 
-<nav class="nav flex-column">
-	<NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
-	<NavLink class="nav-link" href="/shared-hello">Shared Hello</NavLink>
-	@* add Weather later when it lives in Shared *@
-	@* add Counter later when it lives in Shared *@
-</nav>
+<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+    <MudNavLink Href="/weather" Match="NavLinkMatch.Prefix">Weather</MudNavLink>
+    <MudNavLink Href="/counter" Match="NavLinkMatch.Prefix">Counter</MudNavLink>
+</MudNavMenu>

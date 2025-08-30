@@ -1,9 +1,13 @@
-﻿<Router AppAssembly="@typeof(MinimalRouter).Assembly"
+﻿@* Classic router WITH a default layout so the NavMenu renders *@
+<Router AppAssembly="@typeof(MinimalRouter).Assembly"
         AdditionalAssemblies="@(new[] { typeof(NerdyLou.Shared.AssemblyMarker).Assembly })">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" />
+        <RouteView RouteData="@routeData"
+                   DefaultLayout="typeof(NerdyLou.MAUI.Components.Layout.MainLayout)" />
     </Found>
     <NotFound>
-        <p>Not found.</p>
+        <LayoutView Layout="typeof(NerdyLou.MAUI.Components.Layout.MainLayout)">
+            <p>Not found.</p>
+        </LayoutView>
     </NotFound>
 </Router>
