@@ -3,10 +3,10 @@
         AdditionalAssemblies="@(new[] { typeof(NerdyLou.Shared.AssemblyMarker).Assembly })">
     <Found Context="routeData">
         <RouteView RouteData="@routeData"
-                   DefaultLayout="typeof(NerdyLou.MAUI.Components.Layout.MainLayout)" />
+                   DefaultLayout="typeof(NerdyLou.Shared.Components.Layout.SharedMainLayout)" />
     </Found>
     <NotFound>
-        <LayoutView Layout="typeof(NerdyLou.MAUI.Components.Layout.MainLayout)">
+        <LayoutView Layout="typeof(NerdyLou.Shared.Components.Layout.SharedMainLayout)">
             <p>Not found.</p>
         </LayoutView>
     </NotFound>
